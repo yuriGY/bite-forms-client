@@ -4,15 +4,6 @@ body {
   padding: 20px;
 }
 
-.container {
-  max-width: 600px;
-  margin: 0 auto;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
 h2 {
   color: #6e4b3b;
   border-bottom: 2px solid #6e4b3b;
@@ -30,21 +21,13 @@ label {
 }
 
 input[type="text"] {
-  width: calc(100% - 40px); 
+  width: 100%;
   padding: 12px;
   border: 1px solid #6e4b3b;
   border-radius: 8px;
   box-sizing: border-box;
   font-size: 16px;
-  background-color: #fff9eb; 
-}
-
-.radio-group {
-  padding-left: 20px;
-}
-
-.radio-group label {
-  display: block;
+  background-color: #fff9eb;
 }
 
 .btn {
@@ -60,9 +43,4 @@ input[type="text"] {
 
 .btn:hover {
   background-color: #503525;
-}
-
-#resultado {
-  margin-top: 20px;
-  color: #6e4b3b;
 }

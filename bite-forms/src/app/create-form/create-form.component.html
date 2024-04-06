@@ -1,3 +1,21 @@
-<p>create-form.component works!</p>
-
-<p>create-form.component works!</p><p>create-form.component works!</p><p>create-form.component works!</p><p>create-form.component works!</p><p>create-form.component works!</p><p>create-form.component works!</p>
+<body>
+  <div class="container">
+    <h2>Forms Bite</h2>
+    <form (ngSubmit)="mostrarVotos()">
+      <div class="form-group">
+          <label for="question">Pergunta:</label>
+          <input type="text" id="question" name="question" required>
+      </div>
+      <div class="form-group radio-group">
+          <label>Escolha:</label>
+          <label><input type="radio" name="choice" value="sim"> Sim</label>
+          <label><input type="radio" name="choice" value="nao"> Não</label>
+      </div>
+      <button type="submit" class="btn" >Enviar</button>
+    </form>
+    <div id="resultado" [hidden]="!resultadoVisible">
+      Votos para Sim: {{ totalSim }} <br>
+      Votos para Não: {{ totalNao }}
+    </div>
+  </div>
+</body>
