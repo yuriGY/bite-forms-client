@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,11 +7,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  @Input() formData: any;
+
   novaPergunta: string = '';
   alternativas: string[] = [''];
   maxAlternativas: number = 10;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   criarPergunta() {
     if (this.novaPergunta.trim() !== '' && this.alternativas.every(alternativa => alternativa.trim() !== '')) {
