@@ -30,4 +30,20 @@ export class AppComponent {
       console.log('Limite máximo de alternativas atingido.');
     }
   }
+
+  generateRandomId(): string {
+    const length = 8;
+    const NUMBERS = "0123456789";
+    const LOWERCASE_LETTERS = "abcdefghijklmnopqrstuvxwyz";
+    const UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVXWYZ";
+
+    const characters = NUMBERS + LOWERCASE_LETTERS + UPPERCASE_LETTERS;
+    let randomId = '';
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomId += characters.charAt(randomIndex);
+    }
+    return randomId;
+  }
 }
