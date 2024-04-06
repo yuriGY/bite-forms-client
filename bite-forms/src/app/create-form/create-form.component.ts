@@ -23,14 +23,14 @@ export class CreateFormComponent {
   }
 
   createTitle() {
-    debugger
     if (this.title.trim() !== '') {
+      this.generateRandomId(); // Gerar ID antes de navegar
       this.formData = {
         id: this.id,
         title: this.title,
         answers: this.answers
       }
-      this.router.navigate([`form/voting/${this.id}`]);
+      this.router.navigateByUrl(`/form/voting/${this.id}`);
     } else {
       console.log('Por favor, preencha a pergunta e todas as alternativas.');
     }
