@@ -46,4 +46,13 @@ export class AppComponent {
     }
     return randomId;
   }
+
+  removerAlternativa(index: number) {
+    this.alternativas.splice(index, 1);
+
+    for (let i = index; i < this.alternativas.length; i++) {
+        this.alternativas[i] = this.alternativas[i + 1];
+    }
+  }
+
 }
