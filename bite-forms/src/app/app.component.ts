@@ -12,11 +12,15 @@ export class AppComponent {
   novaPergunta: string = '';
   alternativas: string[] = [''];
   maxAlternativas: number = 10;
+  alternativasModel: string[] = [];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+    this.alternativasModel = Array(this.maxAlternativas).fill('');
+  }
 
   criarPergunta() {
-    if (this.novaPergunta.trim() !== '' && this.alternativas.every(alternativa => alternativa.trim() !== '')) {
+    debugger
+    if (this.novaPergunta.trim() !== '' && this.alternativas.some(a => a === null || a === "" || a.trim() === "")) {
       this.router.navigate(['/formulario']);
     } else {
       console.log('Por favor, preencha a pergunta e todas as alternativas.');
@@ -25,7 +29,7 @@ export class AppComponent {
 
   adicionarAlternativa() {
     if (this.alternativas.length < this.maxAlternativas) {
-      this.alternativas.push('');
+      this.alternativas.push();
     } else {
       console.log('Limite máximo de alternativas atingido.');
     }
@@ -49,10 +53,7 @@ export class AppComponent {
 
   removerAlternativa(index: number) {
     this.alternativas.splice(index, 1);
-
-    for (let i = index; i < this.alternativas.length; i++) {
-        this.alternativas[i] = this.alternativas[i + 1];
-    }
+    this.alternativasModel.splice(index, 1);
   }
 
 }
