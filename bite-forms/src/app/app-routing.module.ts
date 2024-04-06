@@ -4,8 +4,8 @@ import { CreateFormComponent } from './create-form/create-form.component';
 import { VotingComponent } from './voting/voting.component';
 
 const routes: Routes = [
-  { path: 'form', component: CreateFormComponent },
-  { path: 'form/voting/:id', component: VotingComponent },
+  { path: '', component: CreateFormComponent },
+  { path: 'voting/:id', component: VotingComponent },
 ];
 
 @NgModule({

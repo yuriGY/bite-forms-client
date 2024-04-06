@@ -30,7 +30,7 @@ export class CreateFormComponent {
         title: this.title,
         answers: this.answers
       }
-      this.router.navigateByUrl(`/form/voting/${this.id}`);
+      this.router.navigateByUrl(`voting/${this.id}`);
     } else {
       console.log('Por favor, preencha a pergunta e todas as alternativas.');
     }
