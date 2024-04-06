@@ -1,30 +1,67 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { IFormData } from '../shared/interfaces/form-data.interface';
 
 @Component({
   selector: 'app-create-form',
   templateUrl: './create-form.component.html',
   styleUrls: ['./create-form.component.scss']
 })
-export class CreateFormComponent implements OnInit {
+export class CreateFormComponent {
+  formData: IFormData;
+  id: string;
 
-  isResultVisible = false;
-  totalSim = 0;
-  totalNao = 0;
+  title: string = '';
+  answers: string[] = [''];
+  maxAnswers: number = 10;
+  answersModel: string[] = [];
 
-  constructor() { }
-
-  ngOnInit(): void {
-
+  constructor(
+    private router: Router
+  ) {
+    this.answersModel = Array(this.maxAnswers).fill('');
   }
 
-  mostrarVotos() {
-    this.isResultVisible = true;
-
-    const sim = document.querySelector('input[name="choice"][value="sim"]:checked') as HTMLInputElement;
-    const nao = document.querySelector('input[name="choice"][value="nao"]:checked') as HTMLInputElement;
-
-    this.totalSim = sim ? 1 : 0;
-    this.totalNao = nao ? 1 : 0;
+  createTitle() {
+    debugger
+    if (this.title.trim() !== '') {
+      this.formData = {
+        id: this.id,
+        title: this.title,
+        answers: this.answers
+      }
+      this.router.navigate([`form/voting/${this.id}`]);
+    } else {
+      console.log('Por favor, preencha a pergunta e todas as alternativas.');
+    }
   }
 
+  addAnswer() {
+    if (this.answers.length < this.maxAnswers) {
+      this.answers.push('');
+    } else {
+      console.log('Limite máximo de alternativas atingido.');
+    }
+  }
+
+  generateRandomId() {
+    const length = 8;
+    const NUMBERS = "0123456789";
+    const LOWERCASE_LETTERS = "abcdefghijklmnopqrstuvxwyz";
+    const UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVXWYZ";
+
+    const characters = NUMBERS + LOWERCASE_LETTERS + UPPERCASE_LETTERS;
+    let randomId = '';
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomId += characters.charAt(randomIndex);
+    }
+    this.id = randomId;
+  }
+
+  removeAnswer(index: number) {
+    this.answers.splice(index, 1);
+    this.answersModel.splice(index, 1);
+  }
 }

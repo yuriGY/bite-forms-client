@@ -4,6 +4,15 @@ body {
   padding: 20px;
 }
 
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
 h2 {
   color: #6e4b3b;
   border-bottom: 2px solid #6e4b3b;
@@ -21,17 +30,21 @@ label {
 }
 
 input[type="text"] {
-  width: calc(100% - 40px);
+  width: calc(100% - 40px); 
   padding: 12px;
   border: 1px solid #6e4b3b;
   border-radius: 8px;
   box-sizing: border-box;
   font-size: 16px;
-  background-color: #fff9eb;
+  background-color: #fff9eb; 
 }
 
-.alternativas-group .form-group {
-  position: relative;
+.radio-group {
+  padding-left: 20px;
+}
+
+.radio-group label {
+  display: block;
 }
 
 .btn {
@@ -49,17 +62,7 @@ input[type="text"] {
   background-color: #503525;
 }
 
-.btn-remove {
-  position: absolute;
-  top: 65%;
-  right: 0;
-  transform: translateY(-50%);
-  background-color: #6e4b3b;
-  color: #fff;
-  padding: 6px 10px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-left: 10px;
-  transition: background-color 0.3s ease;
+#resultado {
+  margin-top: 20px;
+  color: #6e4b3b;
 }

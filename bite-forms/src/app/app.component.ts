@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,54 +6,15 @@ import { Router } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  @Input() formData: any;
+export class AppComponent implements OnInit {
 
-  novaPergunta: string = '';
-  alternativas: string[] = [''];
-  maxAlternativas: number = 10;
-  alternativasModel: string[] = [];
+  constructor(
+    private router: Router
+  ) { }
 
-  constructor(private router: Router) {
-    this.alternativasModel = Array(this.maxAlternativas).fill('');
-  }
-
-  criarPergunta() {
-    debugger
-    if (this.novaPergunta.trim() !== '' && this.alternativas.some(a => a === null || a === "" || a.trim() === "")) {
-      this.router.navigate(['/formulario']);
-    } else {
-      console.log('Por favor, preencha a pergunta e todas as alternativas.');
+  ngOnInit(): void {
+    if (this.router.url === '/') {
+      this.router.navigate(['/form']);
     }
   }
-
-  adicionarAlternativa() {
-    if (this.alternativas.length < this.maxAlternativas) {
-      this.alternativas.push();
-    } else {
-      console.log('Limite máximo de alternativas atingido.');
-    }
-  }
-
-  generateRandomId(): string {
-    const length = 8;
-    const NUMBERS = "0123456789";
-    const LOWERCASE_LETTERS = "abcdefghijklmnopqrstuvxwyz";
-    const UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVXWYZ";
-
-    const characters = NUMBERS + LOWERCASE_LETTERS + UPPERCASE_LETTERS;
-    let randomId = '';
-
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      randomId += characters.charAt(randomIndex);
-    }
-    return randomId;
-  }
-
-  removerAlternativa(index: number) {
-    this.alternativas.splice(index, 1);
-    this.alternativasModel.splice(index, 1);
-  }
-
 }

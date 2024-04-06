@@ -1,21 +1,24 @@
 <body>
-  <div class="container">
-    <h2>Forms Bite</h2>
-    <form (ngSubmit)="mostrarVotos()">
+  <header>
+    <h2>Criar Pergunta</h2>
+  </header>
+
+  <section>
+    <form (submit)="createTitle()">
       <div class="form-group">
-          <label for="question">Pergunta:</label>
-          <input type="text" id="question" name="question" required>
+        <label for="pergunta">Pergunta:</label>
+        <input type="text" id="pergunta" name="pergunta" [(ngModel)]="title" required>
       </div>
-      <div class="form-group radio-group">
-          <label>Escolha:</label>
-          <label><input type="radio" name="choice" value="sim"> Sim</label>
-          <label><input type="radio" name="choice" value="nao"> Não</label>
+      <div class="alternativas-group">
+        <div *ngFor="let answer of answers; let i = index" class="form-group">
+          <label for="alternativa{{i}}">Alternativa {{i+1}}:</label>
+          <input type="text" id="alternativa{{i}}" name="alternativa{{i}}" [(ngModel)]="answersModel[i]">
+          <button type="button" class="btn-remove" (click)="removeAnswer(i)">-</button>
+        </div>    
+        <button type="button" class="btn" (click)="addAnswer()">+</button><br><br>
+      <button></button>
       </div>
-      <button type="submit" class="btn" >Enviar</button>
+      <button type="submit" class="btn" (click)="generateRandomId()">Criar</button>
     </form>
-    <div id="resultado" [hidden]="!isResultVisible">
-      Votos para Sim: {{ totalSim }} <br>
-      Votos para Não: {{ totalNao }}
-    </div>
-  </div>
+  </section>
 </body>
