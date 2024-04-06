@@ -4,12 +4,10 @@ import { FormsModule } from '@angular/forms'; // Importação do FormsModule
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CreateFormComponentComponent } from './create-form/create-form.component';
-import { CreateQuestionComponent } from './create-question/create-question.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CreateQuestionComponent,
     CreateFormComponentComponent
   ],
   imports: [

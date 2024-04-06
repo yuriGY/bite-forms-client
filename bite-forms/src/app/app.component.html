@@ -1,5 +1,19 @@
-<!-- app.component.html -->
-<div>
-  <h1>{{ title }}</h1>
-  <router-outlet></router-outlet> <!-- Aqui é onde os componentes correspondentes às rotas serão renderizados -->
-</div>
+<body>
+  <h2>Criar Pergunta</h2>
+
+  <form (submit)="criarPergunta()">
+    <div class="form-group">
+      <label for="pergunta">Pergunta:</label>
+      <input type="text" id="pergunta" name="pergunta" [(ngModel)]="novaPergunta" required>
+    </div>
+    <div class="alternativas-group">
+      <div *ngFor="let alternativa of alternativas; let i = index" class="form-group">
+        <label for="alternativa{{i}}">Alternativa {{i+1}}:</label>
+        <input type="text" id="alternativa{{i}}" name="alternativa{{i}}" [(ngModel)]="alternativas[i]">
+      </div>
+      <button type="button" class="btn" (click)="adicionarAlternativa()">+</button><br><br>
+      <button></button>
+    </div>
+    <button type="submit" class="btn">Criar</button>
+  </form>
+</body>
