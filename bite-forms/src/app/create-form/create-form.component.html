@@ -1,23 +1,25 @@
-<section>
+<section class="container-principal">
   <header>
     <h2>Criar Pergunta</h2>
   </header>
 
   <section>
     <form (submit)="createTitle()">
-      <div class="form-group">
-        <label for="pergunta">Pergunta:</label>
-        <input type="text" id="pergunta" name="pergunta" [(ngModel)]="title" required>
-      </div>
-      <div class="alternativas-group">
-        <div *ngFor="let answer of answers; let i = index" class="form-group">
-          <label for="alternativa{{i}}">Alternativa {{i+1}}:</label>
-          <input type="text" id="alternativa{{i}}" name="alternativa{{i}}" [(ngModel)]="answersModel[i]">
-          <button type="button" class="btn-remove" (click)="removeAnswer(i)">-</button>
-        </div>    
-        <button type="button" class="btn" (click)="addAnswer()">+</button><br><br>
-      </div>
-      <button type="submit" class="btn">Criar</button>
+      <fieldset class="custom-fieldset" [disabled]="formDisabled">
+        <div class="form-group">
+          <label for="pergunta">Pergunta:</label>
+          <input type="text" id="pergunta" name="pergunta" [(ngModel)]="title" required>
+        </div>
+        <div class="alternativas-group">
+          <div *ngFor="let answer of answers; let i = index" class="form-group">
+            <label for="alternativa{{i}}">Alternativa {{i+1}}:</label>
+            <input type="text" id="alternativa{{i}}" name="alternativa{{i}}" [(ngModel)]="answersModel[i]">
+            <button type="button" class="btn-remove" (click)="removeAnswer(i)" [disabled]="formDisabled">-</button>
+          </div>    
+          <button type="button" class="btn" (click)="addAnswer()" [disabled]="formDisabled">+</button><br><br>
+        </div>
+      </fieldset>
+      <button type="submit" class="btn" [disabled]="formDisabled">Criar</button>
     </form>
   </section>
 </section>

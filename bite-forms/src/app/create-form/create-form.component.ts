@@ -10,6 +10,7 @@ import { IFormData } from '../shared/interfaces/form-data.interface';
 export class CreateFormComponent {
   formData: IFormData;
   id: string;
+  formDisabled: boolean = false;
 
   title: string = '';
   answers: string[] = [''];
@@ -24,6 +25,7 @@ export class CreateFormComponent {
 
   createTitle() {
     if (this.title.trim() !== '') {
+      
       this.generateRandomId(); // Gerar ID antes de navegar
       this.formData = {
         id: this.id,
@@ -31,8 +33,10 @@ export class CreateFormComponent {
         answers: this.answers
       }
       this.router.navigateByUrl(`voting/${this.id}`);
+      this.formDisabled = true; // Desabilita o formulário
     } else {
       console.log('Por favor, preencha a pergunta e todas as alternativas.');
+      alert('Por favor, preencha a pergunta e todas as alternativas.');
     }
   }
 
@@ -41,6 +45,13 @@ export class CreateFormComponent {
       this.answers.push('');
     } else {
       console.log('Limite máximo de alternativas atingido.');
+    }
+  }
+
+  removeAnswer(index: number) {
+    if (this.answers.length > 1) {
+      this.answers.splice(index, 1);
+      this.answersModel.splice(index, 1);
     }
   }
 
@@ -58,10 +69,5 @@ export class CreateFormComponent {
       randomId += characters.charAt(randomIndex);
     }
     this.id = randomId;
-  }
-
-  removeAnswer(index: number) {
-    this.answers.splice(index, 1);
-    this.answersModel.splice(index, 1);
   }
 }
