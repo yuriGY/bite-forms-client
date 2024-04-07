@@ -3,11 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { IFormData } from '../shared/interfaces/form-data.interface';
 
 @Component({
-  selector: 'app-voting',
-  templateUrl: './voting.component.html',
-  styleUrls: ['./voting.component.scss']
+  selector: 'app-voting-page',
+  templateUrl: './voting-page.component.html',
+  styleUrls: ['./voting-page.component.scss']
 })
-export class VotingComponent implements OnInit {
+export class VotingPageComponent implements OnInit {
   @Input() formData: IFormData;
 
   id: string;
@@ -16,11 +16,11 @@ export class VotingComponent implements OnInit {
   totalNao = 0;
 
   constructor(
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private clipboard: Clipboard
   ) { }
 
   ngOnInit(): void {
-    debugger
     this.activatedRoute.params.subscribe({
       next: (params) => {
         this.id = params['id'];
@@ -28,7 +28,7 @@ export class VotingComponent implements OnInit {
     });
   }
 
-  mostrarVotos() {
+  showResults() {
     this.isResultVisible = true;
 
     const sim = document.querySelector('input[name="choice"][value="sim"]:checked') as HTMLInputElement;
@@ -38,4 +38,7 @@ export class VotingComponent implements OnInit {
     this.totalNao = nao ? 1 : 0;
   }
 
+  copyURL() {
+    //this.clipboard.read(this.router.url);
+  }
 }

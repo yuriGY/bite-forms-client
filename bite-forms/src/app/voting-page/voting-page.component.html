@@ -1,7 +1,11 @@
 <section>
   <div class="container">
-    <h2>Forms Bite</h2>
-    <form (ngSubmit)="mostrarVotos()">
+    <div id="title-container">
+      <span id="title">Forms Bite</span>
+      <button type="button" class="btn" id="copyBtn" (click)="copyURL()"><span style="padding-right: 5px;">Compartilhar</span><span class="material-symbols-outlined">content_copy</span></button>
+    </div>
+    
+    <form (ngSubmit)="showResults()">
       <div class="form-group">
           <label for="question">Pergunta:</label>
           <input type="text" id="question" name="question" required>
@@ -11,9 +15,9 @@
           <label name="answers"><input type="radio" name="choice" value="sim"> Sim</label>
           <label name="answers"><input type="radio" name="choice" value="nao"> Não</label>
       </div>
-      <button type="submit" class="btn" >Enviar</button>
+      <button type="submit" class="btn">Enviar</button>
     </form>
-    <div id="resultado" [hidden]="!isResultVisible">
+    <div id="result" [hidden]="!isResultVisible">
       Votos para Sim: {{ totalSim }} <br>
       Votos para Não: {{ totalNao }}
     </div>
