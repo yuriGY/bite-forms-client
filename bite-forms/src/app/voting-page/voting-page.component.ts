@@ -1,3 +1,4 @@
+import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IFormData } from '../shared/interfaces/form-data.interface';
@@ -17,7 +18,7 @@ export class VotingPageComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private clipboard: Clipboard
+    private clipboard: Clipboard,
   ) { }
 
   ngOnInit(): void {
@@ -39,6 +40,7 @@ export class VotingPageComponent implements OnInit {
   }
 
   copyURL() {
-    //this.clipboard.read(this.router.url);
+    const url = window.location.href;
+    this.clipboard.copy(url);
   }
 }
