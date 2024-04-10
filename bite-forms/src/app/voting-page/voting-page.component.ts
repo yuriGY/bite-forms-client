@@ -13,6 +13,7 @@ export class VotingPageComponent implements OnInit {
 
   id: string;
   isResultVisible = false;
+  title = 'Variável para receber título da api?';
   totalSim = 0;
   totalNao = 0;
 

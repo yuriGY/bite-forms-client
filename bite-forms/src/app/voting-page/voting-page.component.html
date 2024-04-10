@@ -1,22 +1,23 @@
+<span id="logo-title">Forms Bite</span>
+
 <section>
   <div class="container">
     <div id="title-container">
-      <span id="title">Forms Bite</span>
-      <button type="button" class="btn" id="copyBtn" (click)="copyURL()"><span style="padding-right: 5px;">Compartilhar</span><span class="material-symbols-outlined">content_copy</span></button>
+      
+      
     </div>
     
     <form (ngSubmit)="showResults()">
       <div class="form-group">
-          <label for="question">Pergunta:</label>
-          <input type="text" id="question" name="question" required>
+          <span id="title">{{ title }}</span>
       </div>
-      <div class="form-group radio-group">
-          <label for="answers">Escolha:</label>
-          <label name="answers"><input type="radio" name="choice" value="sim"> Sim</label>
-          <label name="answers"><input type="radio" name="choice" value="nao"> Não</label>
+      <div class="form-group answers-list">
+          <span name="answers"><input type="radio" name="choice" value="sim"> Sim</span>
+          <span name="answers"><input type="radio" name="choice" value="nao"> Não</span>
       </div>
-      <button type="submit" class="btn">Enviar</button>
+      <button type="submit" class="btn">Votar</button>
     </form>
+    <button type="button" class="btn" id="copyBtn" (click)="copyURL()"><span style="padding-right: 5px;">Compartilhar</span><span class="material-symbols-outlined">content_copy</span></button>
     <div id="result" [hidden]="!isResultVisible">
       Votos para Sim: {{ totalSim }} <br>
       Votos para Não: {{ totalNao }}
