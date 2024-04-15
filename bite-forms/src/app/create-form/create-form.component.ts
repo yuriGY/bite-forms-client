@@ -25,21 +25,38 @@ export class CreateFormComponent {
 
   createTitle() {
     if (this.title.trim() !== '') {
-      
-      this.generateRandomId(); // Gerar ID antes de navegar
-      this.formData = {
-        id: this.id,
-        title: this.title,
-        answers: this.answers
+      // Verifica se todas as alternativas foram preenchidas
+      const allAnswersFilled = this.answersModel.slice(0, this.answers.length).every(answer => answer.trim() !== '');
+  
+      if (allAnswersFilled) {
+        // Verifica se todas as alternativas são únicas
+        const allAnswersUnique = this.answersModel.slice(0, this.answers.length).every((answer, index) => this.answersModel.indexOf(answer) === index);
+  
+        if (allAnswersUnique) {
+          this.generateRandomId(); // Gerar ID antes de navegar
+          this.formData = {
+            id: this.id,
+            title: this.title,
+            answers: this.answers
+          };
+          this.router.navigateByUrl(`voting/${this.id}`);
+          this.formDisabled = true; // Desabilita o formulário
+        } else {
+          console.log('Por favor, preencha alternativas únicas, parece que tem alternativas com os mesmos valores.');
+          alert('Por favor, preencha alternativas únicas, parece que tem alternativas com os mesmos valores.');
+        }
+      } else {
+        console.log('Por favor, preencha todas as alternativas.');
+        alert('Por favor, preencha todas as alternativas.');
       }
-      this.router.navigateByUrl(`voting/${this.id}`);
-      this.formDisabled = true; // Desabilita o formulário
     } else {
-      console.log('Por favor, preencha a pergunta e todas as alternativas.');
-      alert('Por favor, preencha a pergunta e todas as alternativas.');
+      console.log('Por favor, preencha a pergunta e pelo menos uma alternativa.');
+      alert('Por favor, preencha a pergunta e pelo menos uma alternativa.');
     }
   }
-
+  
+  
+  
   addAnswer() {
     if (this.answers.length < this.maxAnswers) {
       this.answers.push('');
