@@ -12,15 +12,21 @@
           <span id="title">{{ title }}</span>
       </div>
       <div class="form-group answers-list">
-          <span name="answers"><input type="radio" name="choice" value="sim"> Sim</span>
-          <span name="answers"><input type="radio" name="choice" value="nao"> Não</span>
+          <div *ngFor="let answer of answers" class="answer-container">
+            <span>{{ answer.text }}</span>
+            <span id="result" *ngIf="isResultVisible">{{ answer.votes }}</span>
+          </div>
       </div>
-      <button type="submit" class="btn">Votar</button>
+      <div class="button-container">
+        <button type="submit" class="btn">Votar</button>
+        <button type="button" class="btn" id="copyBtn" (click)="copyURL()">
+          <span style="padding-right: 5px;">Compartilhar</span><span class="material-symbols-outlined">content_copy</span>
+        </button>
+      </div>
+      
     </form>
-    <button type="button" class="btn" id="copyBtn" (click)="copyURL()"><span style="padding-right: 5px;">Compartilhar</span><span class="material-symbols-outlined">content_copy</span></button>
-    <div id="result" [hidden]="!isResultVisible">
-      Votos para Sim: {{ totalSim }} <br>
-      Votos para Não: {{ totalNao }}
-    </div>
+
+
+    
   </div>
 </section>

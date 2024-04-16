@@ -1,6 +1,7 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { IAnswers } from '../shared/interfaces/answers.interface';
 import { IFormData } from '../shared/interfaces/form-data.interface';
 
 @Component({
@@ -14,8 +15,14 @@ export class VotingPageComponent implements OnInit {
   id: string;
   isResultVisible = false;
   title = 'Variável para receber título da api?';
-  totalSim = 0;
-  totalNao = 0;
+  answers: IAnswers[] = [{
+    text: 'Sim',
+    votes: 0
+  },
+  {
+    text: 'Não',
+    votes: 0
+  }];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -26,18 +33,16 @@ export class VotingPageComponent implements OnInit {
     this.activatedRoute.params.subscribe({
       next: (params) => {
         this.id = params['id'];
+
+        // this.firestore.subscribe((data: IAnswers[]) => {
+        //   this.answers = data; // Atribua os dados recebidos ao array
+        // });
       }
     });
   }
 
   showResults() {
     this.isResultVisible = true;
-
-    const sim = document.querySelector('input[name="choice"][value="sim"]:checked') as HTMLInputElement;
-    const nao = document.querySelector('input[name="choice"][value="nao"]:checked') as HTMLInputElement;
-
-    this.totalSim = sim ? 1 : 0;
-    this.totalNao = nao ? 1 : 0;
   }
 
   copyURL() {

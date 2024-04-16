@@ -1,5 +1,5 @@
 * {
-  font-family: "Kaushan Script", cursive;
+  font-family: "Roboto", Arial, sans-serif;
 }
 
 .container {
@@ -64,14 +64,29 @@ input[type="text"] {
 }
 
 .answers-list {
+  display: flex;
+  flex-direction: column;
   min-height: 400px;
   border: 1px solid #6e4b3b;
   border-radius: 12px;
-  padding-left: 20px;
+  padding: 10px 20px;
+}
+
+.answer-container {
+  display: flex;
+  background-color: #8F624D;
+  color: rgb(228, 228, 228);
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .radio-group label {
   display: block;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
 }
 
 .btn {
@@ -83,7 +98,7 @@ input[type="text"] {
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s ease;
-  font-family: "Roboto", Arial, sans-serif;
+
 }
 
 .btn:hover {
