@@ -14,6 +14,7 @@ export class VotingPageComponent implements OnInit {
 
   id: string;
   isResultVisible = false;
+  isVoteSelected = false;
   title = 'Variável para receber título da api?';
   answers: IAnswers[] = [{
     text: 'Sim',
@@ -41,6 +42,10 @@ export class VotingPageComponent implements OnInit {
     });
   }
 
+  save() {
+    // this.firestore.save(this.answers);
+    this.showResults();
+  }
   showResults() {
     this.isResultVisible = true;
   }

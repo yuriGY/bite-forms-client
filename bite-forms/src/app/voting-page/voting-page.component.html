@@ -1,32 +1,41 @@
-<span id="logo-title">Forms Bite</span>
+<div class="logo">
+  <span class="logo-title">Forms Bite</span>
+</div>
 
 <section>
   <div class="container">
     <div id="title-container">
-      
-      
+
+
     </div>
-    
-    <form (ngSubmit)="showResults()">
+
+    <form (ngSubmit)="save()">
       <div class="form-group">
-          <span id="title">{{ title }}</span>
+        <span id="title">{{ title }}</span>
       </div>
       <div class="form-group answers-list">
-          <div *ngFor="let answer of answers" class="answer-container">
-            <span>{{ answer.text }}</span>
-            <span id="result" *ngIf="isResultVisible">{{ answer.votes }}</span>
-          </div>
+        <div *ngFor="let answer of answers" class="answer-container">
+          <span>{{ answer.text }}</span>
+          <span id="result" *ngIf="isResultVisible">{{ answer.votes }}</span>
+        </div>
       </div>
       <div class="button-container">
-        <button type="submit" class="btn">Votar</button>
-        <button type="button" class="btn" id="copyBtn" (click)="copyURL()">
-          <span style="padding-right: 5px;">Compartilhar</span><span class="material-symbols-outlined">content_copy</span>
-        </button>
+        <button type="submit" id="vote-button" class="btn" [disabled]="!isVoteSelected">Votar</button>
+        <div class="button-grouping">
+          <button type="button" class="btn btn-with-icon" (click)="showResults()">
+            <span class="icon-padding">Resultados</span>
+            <span class="material-symbols-outlined">monitoring</span>
+          </button>
+          <button type="button" class="btn btn-with-icon" (click)="copyURL()">
+            <span class="icon-padding">Compartilhar</span><span class="material-symbols-outlined">content_copy</span>
+          </button>
+
+        </div>
       </div>
-      
+
     </form>
 
 
-    
+
   </div>
 </section>

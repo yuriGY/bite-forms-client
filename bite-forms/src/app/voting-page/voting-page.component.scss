@@ -2,10 +2,34 @@
   font-family: "Roboto", Arial, sans-serif;
 }
 
+::ng-deep app-voting-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen and (min-width: 0px) and (max-width: 768px) {
+  .container {
+    max-width: 300px !important;
+  }
+
+  .form-group {
+    text-align: center;
+  }
+
+  .button-grouping {
+    flex-direction: column !important;
+  }
+
+  .btn-with-icon {
+    margin-top: 5px;
+    margin-left: 0px !important;
+  }
+}
+
 .container {
   max-width: 600px;
   margin: 0 auto;
-  margin-top: 50px;
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -18,23 +42,6 @@
   align-items: center;
 }
 
-#copyBtn {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-left: auto;
-  margin-bottom: 5px;
-  padding: 8px 11px;
-  text-align: center;
-}
-
-#logo-title {
-  font-family: 'Georgia', serif;
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #6e4b3b;
-}
-
 .form-group {
   margin-bottom: 20px;
 }
@@ -43,8 +50,6 @@
   font-size: 2.5em;
   font-weight: bold;
   color: #6e4b3b;
-  text-shadow: -2px 5px 5px #00000050;
-  border-bottom: 2px solid #6e4b3b;
 }
 
 label {
@@ -54,13 +59,13 @@ label {
 }
 
 input[type="text"] {
-  width: calc(100% - 40px); 
+  width: calc(100% - 40px);
   padding: 12px;
   border: 1px solid #6e4b3b;
   border-radius: 8px;
   box-sizing: border-box;
   font-size: 16px;
-  background-color: #fff9eb; 
+  background-color: #fff9eb;
 }
 
 .answers-list {
@@ -87,22 +92,43 @@ input[type="text"] {
 .button-container {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .btn {
   background-color: #6e4b3b;
   color: #fff;
-  padding: 12px 24px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s ease;
-
 }
 
 .btn:hover {
   background-color: #503525;
+}
+
+#vote-button {
+  padding: 12px 24px;
+}
+
+.button-grouping {
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+}
+
+.btn-with-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 11px !important;
+  margin-left: 8px;
+}
+
+.icon-padding {
+  padding-right: 5px;
 }
 
 #result {
