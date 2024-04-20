@@ -4,11 +4,6 @@
 
 <section>
   <div class="container">
-    <div id="title-container">
-
-
-    </div>
-
     <form (ngSubmit)="save()">
       <div class="form-group">
         <span id="title">{{ title }}</span>
@@ -20,22 +15,22 @@
         </div>
       </div>
       <div class="button-container">
-        <button type="submit" id="vote-button" class="btn" [disabled]="!isVoteSelected">Votar</button>
+        <button type="submit" id="vote-button" [ngClass]="'btn ' + (isVoteSelected ? '' : 'disabled-button')"
+          [disabled]="!isVoteSelected">Votar</button>
+
         <div class="button-grouping">
-          <button type="button" class="btn btn-with-icon" (click)="showResults()">
-            <span class="icon-padding">Resultados</span>
+          <button type="button" [ngClass]="'btn btn-with-icon ' + (isResultTimedout ? 'disabled-button' : '')"
+            [disabled]="isResultTimedout" (click)="showResults()">
+            <span class="icon-padding">{{ isResultTimedout ? 'Aguarde 5s' : 'Resultados' }}</span>
             <span class="material-symbols-outlined">monitoring</span>
           </button>
-          <button type="button" class="btn btn-with-icon" (click)="copyURL()">
-            <span class="icon-padding">Compartilhar</span><span class="material-symbols-outlined">content_copy</span>
-          </button>
 
+          <button type="button" class="btn btn-with-icon" (click)="copyURL()" style="min-width: 143.97px">
+            <span class="icon-padding">{{ hasCopiedUrl ? 'Copiado!' : 'Compartilhar' }}</span>
+            <span class="material-symbols-outlined">{{ hasCopiedUrl ? 'task' : 'content_copy' }}</span>
+          </button>
         </div>
       </div>
-
     </form>
-
-
-
   </div>
 </section>

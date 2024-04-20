@@ -27,11 +27,11 @@ export class CreateFormComponent {
     if (this.title.trim() !== '') {
       // Verifica se todas as alternativas foram preenchidas
       const allAnswersFilled = this.answersModel.slice(0, this.answers.length).every(answer => answer.trim() !== '');
-  
+
       if (allAnswersFilled) {
         // Verifica se todas as alternativas são únicas
         const allAnswersUnique = this.answersModel.slice(0, this.answers.length).every((answer, index) => this.answersModel.indexOf(answer) === index);
-  
+
         if (allAnswersUnique) {
           this.generateRandomId(); // Gerar ID antes de navegar
           this.formData = {
@@ -54,9 +54,7 @@ export class CreateFormComponent {
       alert('Por favor, preencha a pergunta e pelo menos uma alternativa.');
     }
   }
-  
-  
-  
+
   addAnswer() {
     if (this.answers.length < this.maxAnswers) {
       this.answers.push('');

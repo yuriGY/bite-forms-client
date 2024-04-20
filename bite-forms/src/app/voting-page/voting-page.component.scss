@@ -36,12 +36,6 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-#title-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .form-group {
   margin-bottom: 20px;
 }
@@ -113,6 +107,16 @@ input[type="text"] {
   padding: 12px 24px;
 }
 
+.disabled-button {
+  animation: none;
+  cursor: not-allowed;
+  background-color: #6e4b3b56;
+}
+
+.disabled-button:hover {
+  background-color: #6e4b3b56;
+}
+
 .button-grouping {
   display: flex;
   flex-direction: row;
@@ -123,8 +127,9 @@ input[type="text"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 11px !important;
+  padding: 8px 11px;
   margin-left: 8px;
+  min-width: 40px;
 }
 
 .icon-padding {

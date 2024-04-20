@@ -13,16 +13,19 @@ export class VotingPageComponent implements OnInit {
   @Input() formData: IFormData;
 
   id: string;
+  hasCopiedUrl = false;
   isResultVisible = false;
   isVoteSelected = false;
-  title = 'Variável para receber título da api?';
+  isResultTimedout = false;
+
+  title = 'qual a sua fruta favorita?';
   answers: IAnswers[] = [{
-    text: 'Sim',
-    votes: 0
+    text: 'abacaxi',
+    votes: 5
   },
   {
-    text: 'Não',
-    votes: 0
+    text: 'limão',
+    votes: 11
   }];
 
   constructor(
@@ -35,9 +38,7 @@ export class VotingPageComponent implements OnInit {
       next: (params) => {
         this.id = params['id'];
 
-        // this.firestore.subscribe((data: IAnswers[]) => {
-        //   this.answers = data; // Atribua os dados recebidos ao array
-        // });
+        this.getData();
       }
     });
   }
@@ -46,12 +47,29 @@ export class VotingPageComponent implements OnInit {
     // this.firestore.save(this.answers);
     this.showResults();
   }
+
+  getData() {
+    // this.firestore.subscribe((data: IAnswers[]) => {
+    //   this.answers = data; // Atribua os dados recebidos ao array
+    // });
+  }
+
   showResults() {
     this.isResultVisible = true;
+    this.isResultTimedout = true;
+
+    setTimeout(() => {
+      this.isResultTimedout = false;
+    }, 5000);
   }
 
   copyURL() {
     const url = window.location.href;
     this.clipboard.copy(url);
+    this.hasCopiedUrl = true;
+
+    setTimeout(() => {
+      this.hasCopiedUrl = false;
+    }, 2000);
   }
 }
