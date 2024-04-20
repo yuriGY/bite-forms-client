@@ -42,15 +42,12 @@ export class CreateFormComponent {
           this.router.navigateByUrl(`voting/${this.id}`);
           this.formDisabled = true; // Desabilita o formulário
         } else {
-          console.log('Por favor, preencha alternativas únicas, parece que tem alternativas com os mesmos valores.');
           alert('Por favor, preencha alternativas únicas, parece que tem alternativas com os mesmos valores.');
         }
       } else {
-        console.log('Por favor, preencha todas as alternativas.');
         alert('Por favor, preencha todas as alternativas.');
       }
     } else {
-      console.log('Por favor, preencha a pergunta e pelo menos uma alternativa.');
       alert('Por favor, preencha a pergunta e pelo menos uma alternativa.');
     }
   }
@@ -59,7 +56,7 @@ export class CreateFormComponent {
     if (this.answers.length < this.maxAnswers) {
       this.answers.push('');
     } else {
-      console.log('Limite máximo de alternativas atingido.');
+      alert('Limite máximo de alternativas atingido.');
     }
   }
 
@@ -84,5 +81,9 @@ export class CreateFormComponent {
       randomId += characters.charAt(randomIndex);
     }
     this.id = randomId;
+  }
+
+  redirectToMainPage() {
+    this.router.navigateByUrl(`/`);
   }
 }

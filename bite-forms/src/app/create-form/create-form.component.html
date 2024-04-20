@@ -1,4 +1,4 @@
-<div class="logo">
+<div class="logo" (click)="redirectToMainPage()">
   <span class="logo-title">Forms Bite</span>
 </div>
 
@@ -22,8 +22,8 @@
           </div>
           <button type="button" class="btn" (click)="addAnswer()" [disabled]="formDisabled">+</button><br><br>
         </div>
+        <button type="submit" class="btn" [disabled]="formDisabled">Criar</button>
       </fieldset>
-      <button type="submit" class="btn" [disabled]="formDisabled">Criar</button>
     </form>
   </section>
 </section>

@@ -1,4 +1,4 @@
-<div class="logo">
+<div class="logo" (click)="redirectToMainPage()">
   <span class="logo-title">Forms Bite</span>
 </div>
 
@@ -9,14 +9,14 @@
         <span id="title">{{ title }}</span>
       </div>
       <div class="form-group answers-list">
-        <div *ngFor="let answer of answers" class="answer-container">
+        <div *ngFor="let answer of answers" class="answer-container" (click)="selectAnswer(answer)">
           <span>{{ answer.text }}</span>
           <span id="result" *ngIf="isResultVisible">{{ answer.votes }}</span>
         </div>
       </div>
       <div class="button-container">
-        <button type="submit" id="vote-button" [ngClass]="'btn ' + (isVoteSelected ? '' : 'disabled-button')"
-          [disabled]="!isVoteSelected">Votar</button>
+        <button type="submit" id="vote-button" [ngClass]="'btn ' + (isAnswerSelected ? '' : 'disabled-button')"
+          [disabled]="!isAnswerSelected">Votar</button>
 
         <div class="button-grouping">
           <button type="button" [ngClass]="'btn btn-with-icon ' + (isResultTimedout ? 'disabled-button' : '')"

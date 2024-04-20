@@ -1,6 +1,6 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IAnswers } from '../shared/interfaces/answers.interface';
 import { IFormData } from '../shared/interfaces/form-data.interface';
 
@@ -13,12 +13,14 @@ export class VotingPageComponent implements OnInit {
   @Input() formData: IFormData;
 
   id: string;
+  selectedAnswer: string;
+  title: string;
+
   hasCopiedUrl = false;
   isResultVisible = false;
-  isVoteSelected = false;
+  isAnswerSelected = false;
   isResultTimedout = false;
 
-  title = 'qual a sua fruta favorita?';
   answers: IAnswers[] = [{
     text: 'abacaxi',
     votes: 5
@@ -31,27 +33,32 @@ export class VotingPageComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private clipboard: Clipboard,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe({
       next: (params) => {
-        this.id = params['id'];
-
+        this.id = params['id']; // ao abrir a página, a variável id recebe o id da url (que foi gerado ao criar o formulário)
         this.getData();
       }
     });
   }
 
   save() {
-    // this.firestore.save(this.answers);
+    //salvar o voto do usuário no firestore aqui, voto do usuário se encontra na var selectedAnswer
+    //quando for exibir os resultados, lembre-se de atualizar os dados (adicionar +1 ao resultado do voto da requisição que foi feita ao abrir o componente ou salvar voto -> realizar a requisição de novo e exibir)
     this.showResults();
   }
 
   getData() {
-    // this.firestore.subscribe((data: IAnswers[]) => {
-    //   this.answers = data; // Atribua os dados recebidos ao array
-    // });
+    // receber os dados do firestore aqui
+    this.title = 'qual a sua fruta favorita ?';/* receba o título */
+  }
+
+  selectAnswer(answer: IAnswers) {
+    this.selectedAnswer = answer.text;
+    this.isAnswerSelected = true;
   }
 
   showResults() {
@@ -71,5 +78,9 @@ export class VotingPageComponent implements OnInit {
     setTimeout(() => {
       this.hasCopiedUrl = false;
     }, 2000);
+  }
+
+  redirectToMainPage() {
+    this.router.navigateByUrl(`/`);
   }
 }

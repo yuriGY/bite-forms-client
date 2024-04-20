@@ -2,6 +2,16 @@
   font-family: "Roboto", Arial, sans-serif;
 }
 
+@media screen and (min-width: 0px) and (max-width: 768px) {
+  section {
+    min-width: 350px !important;
+  }
+}
+
+section {
+  min-width: 800px;
+}
+
 ::ng-deep app-create-form {
   display: flex;
   flex-direction: column;
@@ -16,7 +26,6 @@ h2 {
 
 .container-principal {
   padding: 0px 40px 40px;
-
 }
 
 .form-group {
