@@ -77,15 +77,18 @@ input[type="text"] {
   border: 1px solid #6e4b3b;
   border-radius: 12px;
   padding: 10px 20px;
+  text-align: right;
 }
 
 .answer-container {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   height: 40px;
   background-color: #8F624D;
   color: rgb(228, 228, 228);
-  align-items: center;
   margin-bottom: 10px;
+  padding: 0 10px;
 }
 
 .answer-container:hover {
@@ -96,6 +99,34 @@ input[type="text"] {
 
 .selected-answer {
   background-color: #6e4b3b;
+}
+
+#result {
+  color: #fff;
+  background-color: #8e6f59;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  display: inline-block;
+  vertical-align: middle;
+  transition: opacity 0.3s ease;
+  margin-left: 10px;
+}
+
+.answers-list.show-votes #result {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@keyframes showVotes {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .radio-group label {
@@ -155,7 +186,3 @@ input[type="text"] {
   padding-right: 5px;
 }
 
-#result {
-  margin-top: 20px;
-  color: #6e4b3b;
-}
