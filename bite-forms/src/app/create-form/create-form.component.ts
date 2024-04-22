@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IFormData } from '../shared/interfaces/form-data.interface';
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { collection, doc, getDocs, addDoc, updateDoc } from "firebase/firestore"; 
 
 @Component({
   selector: 'app-create-form',
@@ -8,6 +11,22 @@ import { IFormData } from '../shared/interfaces/form-data.interface';
   styleUrls: ['./create-form.component.scss']
 })
 export class CreateFormComponent {
+  // Your web app's Firebase configuration
+  firebaseConfig = {
+    apiKey: "AIzaSyBsRtNUhJa0tCp11DSEj091k2h-lZseDqk",
+    authDomain: "bite-forms-43e4e.firebaseapp.com",
+    databaseURL: "https://bite-forms-43e4e-default-rtdb.firebaseio.com",
+    projectId: "bite-forms-43e4e",
+    storageBucket: "bite-forms-43e4e.appspot.com",
+    messagingSenderId: "979829682593",
+    appId: "1:979829682593:web:0750f0b17466f6486d5be0"
+  };
+
+  // Initialize Firebase
+  app = initializeApp(this.firebaseConfig);
+  // Initialize Cloud Firestore and get a reference to the service
+  db = getFirestore(this.app);
+
   formData: IFormData;
   id: string;
   formDisabled: boolean = false;
@@ -39,6 +58,8 @@ export class CreateFormComponent {
             title: this.title,
             answers: this.answers
           };
+
+          this.saveQuestion();
           this.router.navigateByUrl(`voting/${this.id}`);
           this.formDisabled = true; // Desabilita o formulário
         } else {
@@ -81,6 +102,38 @@ export class CreateFormComponent {
       randomId += characters.charAt(randomIndex);
     }
     this.id = randomId;
+  }
+
+  //Método para salvar a pergunta na FireStore
+  async saveQuestion() {
+    const questionDocRef = doc(this.db, 'forms', 'kuayLn5dyp6vTvfwZ0T6');
+    const answersDocRef = doc(this.db, 'forms', 'kuayLn5dyp6vTvfwZ0T6', 'answers', 'q7BBLenxj3kn3yKpnpIk');
+    
+    const optionsText = this.answersModel
+      .map((item: string) => item.trim())
+      .filter((item: string) => item !== ""); // Elimina os elementos vazios
+
+    try {
+      await updateDoc(questionDocRef, {
+        "id": this.formData.id,
+        "title": this.formData.title
+      });
+
+      console.log("Document 1 written ")
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+
+    try {
+      await updateDoc(answersDocRef, {
+        "options": optionsText,
+        "votes": optionsText.map(() => 0) // Recria o array de votos, para cada opção, com zero
+      });
+
+      console.log("Document 1 written ")
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   }
 
   redirectToMainPage() {
