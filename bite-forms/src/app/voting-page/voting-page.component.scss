@@ -94,6 +94,10 @@ input[type="text"] {
   cursor: pointer;
 }
 
+.selected-answer {
+  background-color: #6e4b3b;
+}
+
 .radio-group label {
   display: block;
 }

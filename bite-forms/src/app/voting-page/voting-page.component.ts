@@ -23,11 +23,13 @@ export class VotingPageComponent implements OnInit {
 
   answers: IAnswers[] = [{
     text: 'abacaxi',
-    votes: 5
+    votes: 5,
+    isSelected: false
   },
   {
     text: 'limão',
-    votes: 11
+    votes: 11,
+    isSelected: false
   }];
 
   constructor(
@@ -59,6 +61,12 @@ export class VotingPageComponent implements OnInit {
   selectAnswer(answer: IAnswers) {
     this.selectedAnswer = answer.text;
     this.isAnswerSelected = true;
+
+    this.answers.forEach((a) => {
+      a.isSelected = false;
+    });
+
+    answer.isSelected = true;
   }
 
   showResults() {
