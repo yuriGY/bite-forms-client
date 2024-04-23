@@ -55,15 +55,13 @@ export class VotingPageComponent implements OnInit {
       next: (params) => {
         this.id = params['id'];
 
+        this.getLocalStorageData();
         this.getData();
       }
     });
-
-    this.getLocalStorageData();
   }
 
   getLocalStorageData() {
-    debugger
     const localStorageData = localStorage.getItem(this.localStorageKey);
     if (localStorageData) {
       const userData = JSON.parse(localStorageData);
@@ -80,9 +78,9 @@ export class VotingPageComponent implements OnInit {
 
   saveToLocalStorage(): void {
     if (!this.hasVoted) {
+      this.hasVoted = true;
       const userData = { id: this.id, hasVoted: this.hasVoted };
       localStorage.setItem(this.localStorageKey, JSON.stringify(userData));
-      this.hasVoted = true;
     }
   }
 
