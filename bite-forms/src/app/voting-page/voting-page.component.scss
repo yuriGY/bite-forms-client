@@ -98,7 +98,11 @@ input[type="text"] {
 }
 
 .selected-answer {
-  background-color: #6e4b3b;
+  background-color: #583d31;
+}
+
+.selected-answer:hover {
+  background-color: #8f624db9;
 }
 
 #result {
