@@ -16,8 +16,9 @@
         </div>
       </div>
       <div class="button-container">
-        <button type="submit" id="vote-button" [ngClass]="'btn ' + (isAnswerSelected ? '' : 'disabled-button')"
-          [disabled]="!isAnswerSelected">Votar</button>
+        <button type="submit" id="vote-button"
+          [ngClass]="'btn ' + (isAnswerSelected && !hasVoted? '' : 'disabled-button')"
+          [disabled]="!isAnswerSelected || hasVoted">Votar</button>
 
         <div class="button-grouping">
           <button type="button" [ngClass]="'btn btn-with-icon ' + (isResultTimedout ? 'disabled-button' : '')"

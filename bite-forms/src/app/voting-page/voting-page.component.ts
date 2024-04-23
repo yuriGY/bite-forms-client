@@ -17,9 +17,12 @@ export class VotingPageComponent implements OnInit {
   title: string;
 
   hasCopiedUrl = false;
+  hasVoted = false;
   isResultVisible = false;
   isAnswerSelected = false;
   isResultTimedout = false;
+
+  localStorageKey = 'USER_VOTED';
 
   answers: IAnswers[] = [{
     text: 'abacaxi',
@@ -45,12 +48,26 @@ export class VotingPageComponent implements OnInit {
         this.getData();
       }
     });
+
+    const localStorageData = localStorage.getItem(this.localStorageKey);
+    if (localStorageData) {
+      const userData = JSON.parse(localStorageData);
+      if (userData.id === this.id && userData.hasVoted) {
+        this.hasVoted = true;
+      }
+    }
   }
 
   save() {
     //salvar o voto do usuário no firestore aqui, voto do usuário se encontra na var selectedAnswer
     //quando for exibir os resultados, lembre-se de atualizar os dados (adicionar +1 ao resultado do voto da requisição que foi feita ao abrir o componente ou salvar voto -> realizar a requisição de novo e exibir)
     this.showResults();
+    this.saveToLocalStorage();
+  }
+
+  saveToLocalStorage(): void {
+    const userData = { id: this.id, hasVoted: this.hasVoted };
+    localStorage.setItem(this.localStorageKey, JSON.stringify(userData));
   }
 
   getData() {
