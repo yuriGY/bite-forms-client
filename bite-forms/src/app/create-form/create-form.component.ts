@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { IFormData } from '../shared/interfaces/form-data.interface';
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { collection, doc, getDocs, addDoc, updateDoc } from "firebase/firestore"; 
+import { addDoc, collection, doc, getFirestore, setDoc } from "firebase/firestore";
+import { IFormData } from '../shared/interfaces/form-data.interface';
 
 @Component({
   selector: 'app-create-form',
@@ -60,8 +59,6 @@ export class CreateFormComponent {
           };
 
           this.saveQuestion();
-          this.router.navigateByUrl(`voting/${this.id}`);
-          this.formDisabled = true; // Desabilita o formulário
         } else {
           alert('Por favor, preencha alternativas únicas, parece que tem alternativas com os mesmos valores.');
         }
@@ -106,15 +103,14 @@ export class CreateFormComponent {
 
   //Método para salvar a pergunta na FireStore
   async saveQuestion() {
-    const questionDocRef = doc(this.db, 'forms', 'kuayLn5dyp6vTvfwZ0T6');
-    const answersDocRef = doc(this.db, 'forms', 'kuayLn5dyp6vTvfwZ0T6', 'answers', 'q7BBLenxj3kn3yKpnpIk');
-    
+    const questionDocRef = doc(this.db, 'forms', `${this.id}`);
+
     const optionsText = this.answersModel
       .map((item: string) => item.trim())
       .filter((item: string) => item !== ""); // Elimina os elementos vazios
 
     try {
-      await updateDoc(questionDocRef, {
+      await setDoc(questionDocRef, {
         "id": this.formData.id,
         "title": this.formData.title
       });
@@ -125,7 +121,7 @@ export class CreateFormComponent {
     }
 
     try {
-      await updateDoc(answersDocRef, {
+      await addDoc(collection(this.db, "forms", `${this.id}`, 'answers'), {
         "options": optionsText,
         "votes": optionsText.map(() => 0) // Recria o array de votos, para cada opção, com zero
       });
@@ -134,6 +130,9 @@ export class CreateFormComponent {
     } catch (e) {
       console.error("Error adding document: ", e);
     }
+
+    this.formDisabled = true; // Desabilita o formulário
+    this.router.navigateByUrl(`voting/${this.id}`);
   }
 
   redirectToMainPage() {

@@ -35,20 +35,14 @@ export class VotingPageComponent implements OnInit {
   title: string;
 
   hasCopiedUrl = false;
+  hasVoted = false;
   isResultVisible = false;
   isAnswerSelected = false;
   isResultTimedout = false;
 
-  answers: IAnswers[] = [{
-    text: 'abacaxi',
-    votes: 5,
-    isSelected: false
-  },
-  {
-    text: 'limão',
-    votes: 11,
-    isSelected: false
-  }];
+  localStorageKey = 'USER_DATA';
+
+  answers: IAnswers[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -60,49 +54,76 @@ export class VotingPageComponent implements OnInit {
     this.activatedRoute.params.subscribe({
       next: (params) => {
         this.id = params['id'];
+
+        this.getLocalStorageData();
         this.getData();
       }
     });
   }
 
-  save() {
+  getLocalStorageData() {
+    const localStorageData = localStorage.getItem(this.localStorageKey);
+    if (localStorageData) {
+      const userData = JSON.parse(localStorageData);
+      if (userData.id === this.id && userData.hasVoted) {
+        this.hasVoted = true;
+      }
+    }
+  }
+
+  saveVote() {
     this.showResults();
+    this.saveToLocalStorage();
+  }
+
+  saveToLocalStorage(): void {
+    if (!this.hasVoted) {
+      this.hasVoted = true;
+      const userData = { id: this.id, hasVoted: this.hasVoted };
+      localStorage.setItem(this.localStorageKey, JSON.stringify(userData));
+    }
   }
 
   async getData() {
-    const questionDocRef = collection(this.db, 'forms');
-    const answersColectionRef = collection(this.db, 'forms', 'kuayLn5dyp6vTvfwZ0T6', 'answers');
-    const answersDocRef = doc(this.db, 'forms', 'kuayLn5dyp6vTvfwZ0T6', 'answers', 'q7BBLenxj3kn3yKpnpIk');
+    let idAnswersFirebase: string = '';
 
-    let querySnapshot1 = await getDocs(questionDocRef);
-    querySnapshot1.forEach((doc) => {
-      this.title = doc.data()['title'];
+    const questionDocRef = doc(this.db, 'forms', `${this.id}`);
+    const answersColectionRef = collection(this.db, 'forms', `${this.id}`, 'answers');
+
+    onSnapshot(questionDocRef, (doc) => {
+      this.changeTitle(doc.data());
     });
 
-    let querySnapshot2 = await getDocs(answersColectionRef);
-    querySnapshot2.forEach((doc) => {
-
-      this.answers = [];
+    let answersData = await getDocs(answersColectionRef);
+    answersData.forEach((doc) => {
       for (let i = 0; i < doc.data()['options'].length; i++) {
         this.answers.push({
           text: doc.data()['options'][i],
-          votes: doc.data()['votes'][i]
+          votes: doc.data()['votes'][i],
         });
       }
+      idAnswersFirebase = doc.id;
     });
 
-    onSnapshot(answersDocRef, (doc) => {
-      this.updateVotes(doc.data())
-      console.log('mudou');
-    });
+    try {
+      onSnapshot(doc(this.db, 'forms', `${this.id}`, 'answers', `${idAnswersFirebase}`), (doc) => {
+        this.updateVotes(doc.data())
+      });
+    } catch (e) {
+      console.error("Error aqui adding document: ", e);
+    }
   }
 
   updateVotes(data: any) {
     let votesArray = data.votes;
-    for (let i = 0; i < data.votes.length; i++) {
-      this.answers[i].votes = data.votes[i];
+
+    for (let i = 0; i < votesArray.length; i++) {
+      this.answers[i].votes = votesArray[i];
     }
-    console.log(votesArray);
+  }
+
+  changeTitle(t: any) {
+    this.title = t.title;
   }
 
   selectAnswer(answer: IAnswers) {
