@@ -69,19 +69,26 @@ export class VotingPageComponent implements OnInit {
   save() {
     //salvar o voto do usuário no firestore aqui, voto do usuário se encontra na var selectedAnswer
     //quando for exibir os resultados, lembre-se de atualizar os dados (adicionar +1 ao resultado do voto da requisição que foi feita ao abrir o componente ou salvar voto -> realizar a requisição de novo e exibir)
+    //selectedAnswer
     this.showResults();
   }
 
   async getData() {
-    const questionDocRef = collection(this.db, 'forms'); 
-    const answersColectionRef = collection(this.db, 'forms', 'kuayLn5dyp6vTvfwZ0T6', 'answers'); 
-    const answersDocRef = doc(this.db, 'forms', 'kuayLn5dyp6vTvfwZ0T6', 'answers', 'q7BBLenxj3kn3yKpnpIk'); 
+    const questionCollectionRef = collection(this.db, 'forms');
+    let idAnswersFirebase: string = '';
 
-    let querySnapshot1 = await getDocs(questionDocRef);
-    querySnapshot1.forEach((doc) => {
-      this.title = doc.data()['title'];/* receba o título */ 
+    const questionDocRef = doc(this.db, 'forms', `${this.id}`); 
+    const answersColectionRef = collection(this.db, 'forms', `${this.id}`, 'answers'); 
+
+    let querySnapshot0 = await getDocs(answersColectionRef);
+    querySnapshot0.forEach((doc) => {
+      idAnswersFirebase = doc.id;
     });
 
+    onSnapshot(questionDocRef, (doc) => {
+      this.changeTitle(doc.data()); 
+    });
+    
     let querySnapshot2 = await getDocs(answersColectionRef);
     querySnapshot2.forEach((doc) => {
 
@@ -89,15 +96,21 @@ export class VotingPageComponent implements OnInit {
       for(let i=0; i<doc.data()['options'].length; i++){
         this.answers.push({
           text: doc.data()['options'][i],
-          votes: doc.data()['votes'][i]
+          votes: doc.data()['votes'][i],
+          
         });
       }
+      idAnswersFirebase = doc.id;
     });
 
-    onSnapshot(answersDocRef, (doc) => {
-      this.updateVotes(doc.data())
-      console.log('mudou');
-  });
+    try {
+      onSnapshot(doc(this.db, 'forms', `${this.id}`, 'answers', `${idAnswersFirebase}`), (doc) => {
+        this.updateVotes(doc.data())
+      });
+    } catch(e) {
+        console.error("Error aqui adding document: ", e);
+    }
+    
   }
 
   updateVotes(data: any){
@@ -105,7 +118,10 @@ export class VotingPageComponent implements OnInit {
     for(let i=0; i<data.votes.length; i++){
       this.answers[i].votes = data.votes[i];
     }
-    console.log(votesArray);
+  }
+
+  changeTitle(t: any){
+    this.title = t.title;/* receba o título */ 
   }
 
   selectAnswer(answer: IAnswers) {
