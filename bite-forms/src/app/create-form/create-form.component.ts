@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { IFormData } from '../shared/interfaces/form-data.interface';
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { collection, doc, setDoc, getDocs, addDoc, updateDoc } from "firebase/firestore"; 
+import { addDoc, collection, doc, getFirestore, setDoc } from "firebase/firestore";
+import { IFormData } from '../shared/interfaces/form-data.interface';
 
 @Component({
   selector: 'app-create-form',
@@ -60,8 +59,6 @@ export class CreateFormComponent {
           };
 
           this.saveQuestion();
-          this.router.navigateByUrl(`voting/${this.id}`);
-          this.formDisabled = true; // Desabilita o formulário
         } else {
           alert('Por favor, preencha alternativas únicas, parece que tem alternativas com os mesmos valores.');
         }
@@ -106,9 +103,7 @@ export class CreateFormComponent {
 
   //Método para salvar a pergunta na FireStore
   async saveQuestion() {
-    const questionCollectionRef = collection(this.db, 'forms');
     const questionDocRef = doc(this.db, 'forms', `${this.id}`);
-    const answersDocRef = doc(this.db, 'forms', `${this.id}`, 'answers', 'answer');
 
     const optionsText = this.answersModel
       .map((item: string) => item.trim())
@@ -129,12 +124,15 @@ export class CreateFormComponent {
       await addDoc(collection(this.db, "forms", `${this.id}`, 'answers'), {
         "options": optionsText,
         "votes": optionsText.map(() => 0) // Recria o array de votos, para cada opção, com zero
-      });      
+      });
 
       console.log("Document 1 written ")
     } catch (e) {
       console.error("Error adding document: ", e);
     }
+
+    this.formDisabled = true; // Desabilita o formulário
+    this.router.navigateByUrl(`voting/${this.id}`);
   }
 
   redirectToMainPage() {

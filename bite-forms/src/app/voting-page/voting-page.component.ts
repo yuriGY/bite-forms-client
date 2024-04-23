@@ -1,11 +1,10 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { initializeApp } from "firebase/app";
+import { collection, doc, getDocs, getFirestore, onSnapshot } from "firebase/firestore";
 import { IAnswers } from '../shared/interfaces/answers.interface';
 import { IFormData } from '../shared/interfaces/form-data.interface';
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { collection, doc, getDocs,onSnapshot, addDoc, updateDoc } from "firebase/firestore"; 
 
 @Component({
   selector: 'app-voting-page',
@@ -28,7 +27,7 @@ export class VotingPageComponent implements OnInit {
   app = initializeApp(this.firebaseConfig);
   // Initialize Cloud Firestore and get a reference to the service
   db = getFirestore(this.app);
-   
+
   @Input() formData: IFormData;
 
   id: string;
@@ -36,20 +35,14 @@ export class VotingPageComponent implements OnInit {
   title: string;
 
   hasCopiedUrl = false;
+  hasVoted = false;
   isResultVisible = false;
   isAnswerSelected = false;
   isResultTimedout = false;
 
-  answers: IAnswers[] = [{
-    text: 'abacaxi',
-    votes: 5,
-    isSelected: false
-  },
-  {
-    text: 'limão',
-    votes: 11,
-    isSelected: false
-  }];
+  localStorageKey = 'USER_DATA';
+
+  answers: IAnswers[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -60,44 +53,55 @@ export class VotingPageComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe({
       next: (params) => {
-        this.id = params['id']; // ao abrir a página, a variável id recebe o id da url (que foi gerado ao criar o formulário)
+        this.id = params['id'];
+
         this.getData();
       }
     });
+
+    this.getLocalStorageData();
   }
 
-  save() {
-    //salvar o voto do usuário no firestore aqui, voto do usuário se encontra na var selectedAnswer
-    //quando for exibir os resultados, lembre-se de atualizar os dados (adicionar +1 ao resultado do voto da requisição que foi feita ao abrir o componente ou salvar voto -> realizar a requisição de novo e exibir)
-    //selectedAnswer
+  getLocalStorageData() {
+    debugger
+    const localStorageData = localStorage.getItem(this.localStorageKey);
+    if (localStorageData) {
+      const userData = JSON.parse(localStorageData);
+      if (userData.id === this.id && userData.hasVoted) {
+        this.hasVoted = true;
+      }
+    }
+  }
+
+  saveVote() {
     this.showResults();
+    this.saveToLocalStorage();
+  }
+
+  saveToLocalStorage(): void {
+    if (!this.hasVoted) {
+      const userData = { id: this.id, hasVoted: this.hasVoted };
+      localStorage.setItem(this.localStorageKey, JSON.stringify(userData));
+      this.hasVoted = true;
+    }
   }
 
   async getData() {
-    const questionCollectionRef = collection(this.db, 'forms');
     let idAnswersFirebase: string = '';
 
-    const questionDocRef = doc(this.db, 'forms', `${this.id}`); 
-    const answersColectionRef = collection(this.db, 'forms', `${this.id}`, 'answers'); 
-
-    let querySnapshot0 = await getDocs(answersColectionRef);
-    querySnapshot0.forEach((doc) => {
-      idAnswersFirebase = doc.id;
-    });
+    const questionDocRef = doc(this.db, 'forms', `${this.id}`);
+    const answersColectionRef = collection(this.db, 'forms', `${this.id}`, 'answers');
 
     onSnapshot(questionDocRef, (doc) => {
-      this.changeTitle(doc.data()); 
+      this.changeTitle(doc.data());
     });
-    
-    let querySnapshot2 = await getDocs(answersColectionRef);
-    querySnapshot2.forEach((doc) => {
 
-      this.answers = [];
-      for(let i=0; i<doc.data()['options'].length; i++){
+    let answersData = await getDocs(answersColectionRef);
+    answersData.forEach((doc) => {
+      for (let i = 0; i < doc.data()['options'].length; i++) {
         this.answers.push({
           text: doc.data()['options'][i],
           votes: doc.data()['votes'][i],
-          
         });
       }
       idAnswersFirebase = doc.id;
@@ -107,21 +111,21 @@ export class VotingPageComponent implements OnInit {
       onSnapshot(doc(this.db, 'forms', `${this.id}`, 'answers', `${idAnswersFirebase}`), (doc) => {
         this.updateVotes(doc.data())
       });
-    } catch(e) {
-        console.error("Error aqui adding document: ", e);
+    } catch (e) {
+      console.error("Error aqui adding document: ", e);
     }
-    
   }
 
-  updateVotes(data: any){
+  updateVotes(data: any) {
     let votesArray = data.votes;
-    for(let i=0; i<data.votes.length; i++){
-      this.answers[i].votes = data.votes[i];
+
+    for (let i = 0; i < votesArray.length; i++) {
+      this.answers[i].votes = votesArray[i];
     }
   }
 
-  changeTitle(t: any){
-    this.title = t.title;/* receba o título */ 
+  changeTitle(t: any) {
+    this.title = t.title;
   }
 
   selectAnswer(answer: IAnswers) {
