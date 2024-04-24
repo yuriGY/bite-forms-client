@@ -2,7 +2,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { initializeApp } from "firebase/app";
-import { collection, doc, getDocs, getFirestore, onSnapshot } from "firebase/firestore";
+import { collection, doc, getDocs, getFirestore, onSnapshot, increment, updateDoc } from "firebase/firestore";
 import { IAnswers } from '../shared/interfaces/answers.interface';
 import { IFormData } from '../shared/interfaces/form-data.interface';
 
@@ -72,9 +72,80 @@ export class VotingPageComponent implements OnInit {
     }
   }
 
-  saveVote() {
+  async saveVote() {
     this.showResults();
     this.saveToLocalStorage();
+
+    const answersColectionRef = collection(this.db, 'forms', `${this.id}`, 'answers');
+    let idAnswersFirebase: string = '';
+    let optionsFirebase: any;
+
+    let querySnapshot0 = await getDocs(answersColectionRef);
+    querySnapshot0.forEach((doc) => {
+      idAnswersFirebase = doc.id;
+      optionsFirebase = doc.data()['options'];
+    });
+    
+    const answersDocRef = doc(this.db, 'forms', `${this.id}`, 'answers', `${idAnswersFirebase}`);
+
+    for(let i=0; i<optionsFirebase.length; i++){
+      if(optionsFirebase[i] === this.selectedAnswer){
+        switch (i) {
+          case 0:
+            await updateDoc(answersDocRef, {
+              "votes.opcao0": increment(1)
+            });
+            break;
+          case 1:
+            await updateDoc(answersDocRef, {
+              "votes.opcao1": increment(1)
+            });
+            break;
+          case 2:
+            await updateDoc(answersDocRef, {
+              "votes.opcao2": increment(1)
+            });
+            break;
+          case 3:
+            await updateDoc(answersDocRef, {
+              "votes.opcao3": increment(1)
+            });
+            break;
+            case 4:
+              await updateDoc(answersDocRef, {
+                "votes.opcao4": increment(1)
+              });
+            break;
+            case 5:
+              await updateDoc(answersDocRef, {
+                "votes.opcao5": increment(1)
+              });
+            break;
+            case 6:
+              await updateDoc(answersDocRef, {
+                "votes.opcao6": increment(1)
+              });
+            break;
+            case 7:
+              await updateDoc(answersDocRef, {
+                "votes.opcao7": increment(1)
+              });
+            break;
+            case 8:
+              await updateDoc(answersDocRef, {
+                "votes.opcao8": increment(1)
+              });
+            break;
+            case 9:
+              await updateDoc(answersDocRef, {
+                "votes.opcao9": increment(1)
+              });
+            break;
+          default:
+            alert('Falha ao votar');
+        }
+      }
+    }
   }
 
   saveToLocalStorage(): void {
@@ -86,40 +157,37 @@ export class VotingPageComponent implements OnInit {
   }
 
   async getData() {
+    const questionCollectionRef = collection(this.db, 'forms');
     let idAnswersFirebase: string = '';
 
-    const questionDocRef = doc(this.db, 'forms', `${this.id}`);
-    const answersColectionRef = collection(this.db, 'forms', `${this.id}`, 'answers');
+    const questionDocRef = doc(this.db, 'forms', `${this.id}`); 
+    const answersColectionRef = collection(this.db, 'forms', `${this.id}`, 'answers'); 
 
-    onSnapshot(questionDocRef, (doc) => {
-      this.changeTitle(doc.data());
+    let querySnapshot0 = await getDocs(answersColectionRef);
+    querySnapshot0.forEach((doc) => {
+      idAnswersFirebase = doc.id;
     });
 
-    let answersData = await getDocs(answersColectionRef);
-    answersData.forEach((doc) => {
-      for (let i = 0; i < doc.data()['options'].length; i++) {
-        this.answers.push({
-          text: doc.data()['options'][i],
-          votes: doc.data()['votes'][i],
-        });
-      }
-      idAnswersFirebase = doc.id;
+    onSnapshot(questionDocRef, (doc) => {
+      this.changeTitle(doc.data()); 
     });
 
     try {
       onSnapshot(doc(this.db, 'forms', `${this.id}`, 'answers', `${idAnswersFirebase}`), (doc) => {
         this.updateVotes(doc.data())
       });
-    } catch (e) {
-      console.error("Error aqui adding document: ", e);
+    } catch(e) {
+        console.error("Error adding document: ", e);
     }
   }
 
   updateVotes(data: any) {
-    let votesArray = data.votes;
-
-    for (let i = 0; i < votesArray.length; i++) {
-      this.answers[i].votes = votesArray[i];
+    this.answers = [];
+    for(let i=0; i<data.options.length; i++){
+      this.answers.push({
+        text: data['options'][i],
+        votes: data['votes'][`opcao${i}`]          
+      });
     }
   }
 

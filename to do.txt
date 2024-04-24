@@ -1,0 +1,7 @@
+### Detalhes que faltaram (desnecessário)
+- exibir snackbar ao invés de alerts
+- transformar titulos/labels em placeholders (página 1)
+- tradução para inglês
+- readonly pro botão "-" quando só há 1 alternativa (página 1)
+- quando chegar em 10 alternativas -> botão "+" readonly
+

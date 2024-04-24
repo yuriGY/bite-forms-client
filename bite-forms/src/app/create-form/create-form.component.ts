@@ -109,6 +109,12 @@ export class CreateFormComponent {
       .map((item: string) => item.trim())
       .filter((item: string) => item !== ""); // Elimina os elementos vazios
 
+    // Transforma o vetor de votos em um objeto
+    let objectVotes: { [key: string]: number } = {};
+    for (let i = 0; i < optionsText.length; i++) {
+      objectVotes[`opcao${i}`] = 0;
+    }
+
     try {
       await setDoc(questionDocRef, {
         "id": this.formData.id,
@@ -123,7 +129,7 @@ export class CreateFormComponent {
     try {
       await addDoc(collection(this.db, "forms", `${this.id}`, 'answers'), {
         "options": optionsText,
-        "votes": optionsText.map(() => 0) // Recria o array de votos, para cada opção, com zero
+        "votes": objectVotes
       });
 
       console.log("Document 1 written ")
