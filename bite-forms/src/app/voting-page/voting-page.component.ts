@@ -31,6 +31,7 @@ export class VotingPageComponent implements OnInit {
   @Input() formData: IFormData;
 
   id: string;
+  localStorageKey: string;
   selectedAnswer: string;
   title: string;
 
@@ -40,7 +41,6 @@ export class VotingPageComponent implements OnInit {
   isAnswerSelected = false;
   isResultTimedout = false;
 
-  localStorageKey = 'USER_DATA';
 
   answers: IAnswers[] = [];
 
@@ -55,6 +55,7 @@ export class VotingPageComponent implements OnInit {
       next: (params) => {
         this.id = params['id'];
 
+        this.localStorageKey = `USER_DATA-${this.id}`;
         this.getLocalStorageData();
         this.getData();
       }
